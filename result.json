@@ -1,0 +1,83 @@
+[
+    {
+        "title": "文",
+        "children": [
+            {
+                "string": "一级节点1",
+                "children": [
+                    {
+                        "string": "二级节点1.1",
+                        "children": [
+                            {
+                                "string": "三级节点1.1.1",
+                                "children": []
+                            },
+                            {
+                                "string": "三级节点1.1.2 ",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "二级节点1.2",
+                        "children": []
+                    },
+                    {
+                        "string": "二级节点1.3",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "一级节点2",
+                "children": [
+                    {
+                        "string": "二级节点2.1",
+                        "children": []
+                    },
+                    {
+                        "string": "二级节点2.2",
+                        "children": []
+                    },
+                    {
+                        "string": "二级节点2.3",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "一级节点3",
+                "children": [
+                    {
+                        "string": "二级节点3.1",
+                        "children": []
+                    },
+                    {
+                        "string": "二级节点3.2",
+                        "children": []
+                    },
+                    {
+                        "string": "二级节点3.3",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "一级节点 ",
+                "children": []
+            },
+            {
+                "string": "一级节点5",
+                "children": []
+            },
+            {
+                "string": "一级节点6",
+                "children": []
+            },
+            {
+                "string": "",
+                "children": []
+            }
+        ]
+    }
+]
