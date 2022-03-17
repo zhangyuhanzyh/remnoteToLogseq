@@ -1,6 +1,6 @@
 [
     {
-        "title": "文",
+        "title": "文章名称markdown",
         "children": [
             {
                 "string": "一级节点1",
@@ -72,6 +72,10 @@
             },
             {
                 "string": "一级节点6",
+                "children": []
+            },
+            {
+                "string": "**加粗** ***斜体*** <u>下划线</u> <highlight>颜色</highlight> ",
                 "children": []
             },
             {

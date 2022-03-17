@@ -13,7 +13,7 @@ import operator
 以字典的形式存储
 获取主要的笔记信息，在docs中
 '''
-with open('rem.json','r',encoding='utf-8') as file:
+with open('rem1.json','r',encoding='utf-8') as file:
     remjson_dict = json.load(file)
 #print(remjson_dict)
 
@@ -32,12 +32,12 @@ for doc in docs:
         #删除特殊的无用的节点
         if operator.eq(key,['Document']) | operator.eq(key,['Status'])| operator.eq(key,[{'i': 'q', '_id': 'WWor6M9ZxtgsAw69z'}])| operator.eq(key,['Draft']) :
             continue
-        key_str = ''
-        keyStr = [str(i) for i in key]
+        #key_str = '' #列表内容拼接为字符串
+        #keyStr = [str(i) for i in key]
         #print(key_str.join(keyStr))
         children = doc['children']  #列表，存储的是该节点的子节点_id
         parent = doc['parent']  # 字符串，存储的是节点的父节点_id
-        dicts[doc['_id']] = {'key': key_str.join(keyStr), 'children': children, 'parent': parent}
+        dicts[doc['_id']] = {'key': key, 'children': children, 'parent': parent}
         #可能存在没有parent属性的情况
         # if 'parent' in doc:
         #     parent = doc['parent']  #字符串，存储的是节点的父节点_id
@@ -69,7 +69,24 @@ def create_node(child_id):
     global dicts
     node = {}
     #print(child_id)
-    node['string'] =dicts[child_id]['key']
+    node['string'] = ''
+    content = dicts[child_id]['key']#list
+    #识别文本内容中的markdown内容 list元素只有两种情况 ：一个字符串  或  一个及以上 字典
+    for num in content:
+        if isinstance(num,str) & len(content) == 1:
+            node['string'] = num
+        elif isinstance(num,dict):
+            print("markdown文本")
+            #四种情况  b,l.u,i
+            if 'b' in num:#加粗
+                node['string'] =node['string'] + '**' + num['text'] + '**' + ' '
+            elif 'l' in num:#斜体
+                node['string'] = node['string'] + '***' + num['text'] + '***' + ' '
+            elif 'u' in num:#下划线
+                node['string'] = node['string'] + '<u>' + num['text'] + '</u>' + ' '
+            else:#高亮
+                node['string'] = node['string'] + '<highlight>' + num['text'] + '</highlight>' + ' '
+            print(node['string'])
     children = []
     if dicts[child_id]['children']:
         for childId in dicts[child_id]['children']:
@@ -87,11 +104,12 @@ if first_childs:#笔记有节点的话添加到dict['children']中
 
 print(lsq_dict)
 
+#logseq_roam.json可以识别的json都是[]中
 lsq_list = [lsq_dict]
 
 '''
 保存到result.json文件中
-编码！
+编码！！！！
 '''
 json_file_path = 'result.json'
 with open(json_file_path,mode='w',encoding='utf-8') as json_file:
