@@ -1,7 +1,19 @@
 [
-    null,
     {
-        "title": "笔记2 ",
+        "title": "floder",
+        "children": [
+            {
+                "string": "[[笔记2]]",
+                "children": []
+            },
+            {
+                "string": "[[文章名称]]",
+                "children": []
+            }
+        ]
+    },
+    {
+        "title": "笔记2",
         "children": [
             {
                 "string": "笔记一级节点1",
@@ -50,6 +62,7 @@
                     },
                     {
                         "string": "笔记二级节点3.3",
+                        "uid": "vIHMYzZq7",
                         "children": []
                     }
                 ]
@@ -61,6 +74,7 @@
         "children": [
             {
                 "string": "一级节点1",
+                "uid": "bj2MUOrma",
                 "children": [
                     {
                         "string": "二级节点1.1",
@@ -104,6 +118,7 @@
             },
             {
                 "string": "一级节点3",
+                "uid": "1aHD6bA73",
                 "children": [
                     {
                         "string": "二级节点3.1",
@@ -129,6 +144,7 @@
             },
             {
                 "string": "一级节点6",
+                "uid": "ObPpCSNnh",
                 "children": []
             },
             {
@@ -136,15 +152,23 @@
                 "children": []
             },
             {
-                "string": "块引用((一级节点3)) ",
+                "string": "块引用一级节点3 ((1aHD6bA73))  ",
                 "children": []
             },
             {
-                "string": "文章引用[[文章名称]] [[二元关系]] ((可靠传输)) ",
+                "string": "文章引用[[笔记2]] ",
                 "children": []
             },
             {
-                "string": "文件夹引用[[Computer Network]] ",
+                "string": "文章笔记2引用[[笔记2]] ",
+                "children": []
+            },
+            {
+                "string": "块笔记二级节点3.3引用 ((vIHMYzZq7)) ",
+                "children": []
+            },
+            {
+                "string": "文件夹引用[[floder]] ",
                 "children": []
             }
         ]

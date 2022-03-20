@@ -3,6 +3,8 @@
 
 import json
 import operator
+import random
+import string
 #从rem.json 中读出数据
 #提取需要的信息
 #按照规定的格式写到logseq.json中
@@ -39,14 +41,20 @@ def judge(id):
         return
     flag[id] = 'block'
 
+def create_uid():
+    uid = ''
+    uid = ''.join(random.sample(string.ascii_letters + string.digits,9))
+    print('uid:',uid)
+    return uid
+
 
 for doc in docs:
     if not doc['_id'] in dicts:
         _id = doc['_id']
-        flag[_id] = False #线默认不是page或folder
+        #flag[_id] = False #线默认不是page或folder
         key = doc['key']  #列表，存储的是节点内容
         #删除特殊的无用的节点
-        if operator.eq(key,['Document']) | operator.eq(key,['Status'])| operator.eq(key,[{'i': 'q', '_id': 'WWor6M9ZxtgsAw69z'}])| operator.eq(key,['Draft']) | operator.eq(key,[{'i': 'q', '_id': 'xeu4icH3N4Drt3JSR'}]) :
+        if (operator.eq(key,['Document']) )| (operator.eq(key,['Status']))| (operator.eq(key,['Draft']))| ('rcrp' in doc.keys() ) |('spo' in doc.keys() ):
             continue
         children = doc['children']  # 列表，存储的是该节点的子节点_id
         if (len(key) == 0 | len(children) ==0 ):#remnote中最后会有空节点
@@ -65,7 +73,11 @@ for doc in docs:
         if "forceIsFolder" in doc:
             dicts[_id]['forceIsFolder'] = doc['forceIsFolder']
         #将节点存入到节点字典中后判断该节点类型
+        #print(dicts[_id])
         judge(_id)
+        if ('references' in doc.keys()) :
+            dicts[_id]['references'] = doc['references']
+            dicts[_id]['uid'] = create_uid()
 #打印字典键值及内容
 #print(len(dicts))
 for key,value in dicts.items():
@@ -90,6 +102,7 @@ lsq_list 中包含多个 lsq_dict (folder 中 包含多个 page)
 以每个page为根节点，将所有节点存储到一个lsq_dict中
 用一个递归函数创造节点
 '''
+
 def create_folder(pages):
     global folderr_id
     page = {}
@@ -98,9 +111,11 @@ def create_folder(pages):
     for page_id in pages:
         if page_id in dicts.keys():
             block = {}
-            block["string"] = '[[' + dicts[page_id]['key'][0]#page 引用
+            print(dicts[page_id]['key'][0])
+            block["string"] = '[[' + dicts[page_id]['key'][0] + ']]'#page 引用
             block["children"] = []
             page['children'].append(block)
+    return page
 #返回一个page(dict)
 def create_page(page_id):
     global dicts
@@ -118,6 +133,8 @@ def create_node(_id):
     node = {}
     #print(page)
     node['string'] = ''
+    if 'uid' in dicts[_id]:
+        node['uid'] = dicts[_id]['uid']
     content = dicts[_id]['key']#list
     #识别文本内容中的markdown内容 list元素只有两种情况 ：一个字符串  或  一个及以上 字典
     for num in content:
@@ -142,12 +159,16 @@ def create_node(_id):
                     node['string'] = node['string'] + '[[' + dicts[num['_id']]['key'][0] + ']]'
                 else :#块引用
                     print('块引用')
-                    node['string'] = node['string'] + '((' + dicts[num['_id']]['key'][0] + '))'
+                    node['string'] = node['string'] + ' ((' + dicts[num['_id']]['uid'] + '))'
+    # if('references' in dicts[_id] ):
+    #     node['uid'] = create_uid()
+    #     print('node_uid:',node['uid'])
     print('最终内容：',node['string'])
     children = []
     if dicts[_id]['children']:
         for childId in dicts[_id]['children']:
-            children.append(create_node(childId))
+            if childId in dicts.keys():
+                children.append(create_node(childId))
     node['children'] = children
     return node
 
