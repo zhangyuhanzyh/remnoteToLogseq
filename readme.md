@@ -21,7 +21,12 @@
   * 文件夹： remnote中的文件夹在logseq中体现为：含有对应**笔记链接**的**page**
   * kanban：在kanban块前面加上 kanban
 
-## 三、注意事项
+## 三、文件说明
+
+1. rem(1~5) 分别是从remnote中导出的测试rem.json文件（从开始简单的格式到含有比较复杂的格式）
+2. remnoteToLogseq.md 文件含有编写程序中记录的各种信息及遇到的问题和解决方法
+
+## 四、注意事项
 
 1. remnote必须以文件夹(folder）为单位导出（含有双向链接的page放在同一folder下同时导出）
 1. 打开的文件为你导出的rem.json文件
