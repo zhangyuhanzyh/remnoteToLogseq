@@ -5,22 +5,61 @@ import json
 import operator
 import random
 import string
+
+import urllib.request as request
+import socket
+import os
+
 #从rem.json 中读出数据
 #提取需要的信息
 #按照规定的格式写到logseq.json中
-
 
 '''
 读取rem.json文件
 以字典的形式存储
 获取主要的笔记信息，在docs中
 '''
-with open('rem3.json','r',encoding='utf-8') as file:
+with open('rem4.json','r',encoding='utf-8') as file:
     remjson_dict = json.load(file)
 #print(remjson_dict)
 
 docs = remjson_dict['docs']  #list 876 元素是dict
 #print(docs[0]['_id'])
+img_id = 1#图片编号
+def download_img(img_url, api_token):
+    print('===============================================================')
+    global img_id
+
+    # 为请求增加一下头
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36'
+    headers = ('User-Agent', user_agent)
+    opener = request.build_opener()
+    opener.addheaders = [headers]
+    request.install_opener(opener)
+    try:
+        img_name = "_img_1647951701034_0.png"
+        filename = "D:\\Users\\86152\\Documents\\logseq\\assets\\" + str(img_id) + img_name
+        img_id += 1
+        pic = request.urlretrieve(img_url,filename)
+        return '../assets/'+str(img_id-1) + img_name
+    except Exception as e:
+        print(Exception, ':', e)
+        return "failed"
+    #header = {"Authorization": "Bearer " + api_token} # 设置http header
+    #request = urllib.request.Request(img_url, headers=header)
+    # try:
+    #     response = urllib.request.urlopen(request)
+    #     img_name = "_img.png"
+    #     filename = "D:\\Users\\86152\\Documents\\logseq\\assets\\"+ str(img_id) + img_name
+    #     print('filenameeeeeeeeeeeeeeeeeeeeeeeee:',filename)
+    #     img_id += 1
+    #     if (response.getcode() == 200):
+    #         with open(filename, "wb") as f:
+    #             f.write(response.read()) # 将内容写入图片
+    #         return filename
+    # except:
+    #     return "failed"
+
 
 '''
 从docs存储的各节点中获取需要的笔记内容及其他信息
@@ -47,7 +86,9 @@ def create_uid():
     print('uid:',uid)
     return uid
 
-
+Custom_css_id = '' #
+Custom_css = {} #存储kanban、table等id
+#获取rem中所有有用的信息
 for doc in docs:
     if not doc['_id'] in dicts:
         _id = doc['_id']
@@ -55,6 +96,8 @@ for doc in docs:
         key = doc['key']  #列表，存储的是节点内容
         #删除特殊的无用的节点
         if (operator.eq(key,['Document']) )| (operator.eq(key,['Status']))| (operator.eq(key,['Draft']))| ('rcrp' in doc.keys() ) |('spo' in doc.keys() ):
+            continue
+        if ('rcrt'in doc) and (doc['rcrt'] == 'w'):
             continue
         children = doc['children']  # 列表，存储的是该节点的子节点_id
         if (len(key) == 0 | len(children) ==0 ):#remnote中最后会有空节点
@@ -67,17 +110,44 @@ for doc in docs:
         #可能存在没有parent属性的情况
         if 'parent' in doc:
             parent = doc['parent']  #字符串，存储的是节点的父节点_id
-            dicts[doc['_id']] = {'key':key,'children':children,'parent':parent}
+            if doc['parent'] == Custom_css_id:   #父节点是Custom_css_id的表明是样式块，不需要记录到dicts中
+                if key[0] == 'kanban': #kanban 样式
+                    Custom_css['kanban'] = _id
+                    print('kanban:',Custom_css['kanban'])
+                    continue
+                if key[0] == 'column table  ': #表格样式
+                    Custom_css['table'] = _id
+                    print('table:', Custom_css['table'])
+                    continue
+            dicts[doc['_id']] = {'key': key, 'children': children, 'parent': parent}
         else:
             dicts[doc['_id']] = {'key': key, 'children': children}
         if "forceIsFolder" in doc:
             dicts[_id]['forceIsFolder'] = doc['forceIsFolder']
         #将节点存入到节点字典中后判断该节点类型
         #print(dicts[_id])
-        judge(_id)
-        if ('references' in doc.keys()) :
+
+        if ('references' in doc.keys()) :#被引用过
             dicts[_id]['references'] = doc['references']
             dicts[_id]['uid'] = create_uid()
+        if ('type' in doc) and (doc['type'] == 1):#记忆卡片或记忆块 (此处用and可以，短路逻辑，但&不行）
+            dicts[_id]['type'] = doc['type']
+            if('value' in doc):#记忆卡片
+                dicts[_id]['value'] = doc['value']
+                dicts[_id]['rmcard'] = 1
+            else:
+                dicts[_id]['rmblock'] = 1
+        if ('rcrt' in doc) and (doc['rcrt'] == 'c'):#Custom CSS
+            Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
+            continue
+        if ('typeParents' in doc):
+            if ('kanban' in Custom_css) and  (doc['typeParents'][0]== Custom_css['kanban']):
+                dicts[_id]['css'] = 'kanban'
+                print('kanban-----------------------------------')
+            if ('table' in Custom_css) and (doc['typeParents'][0] == Custom_css['table']):
+                dicts[_id]['css'] = 'table'
+                print('table-----------------------------------')
+        judge(_id)
 #打印字典键值及内容
 #print(len(dicts))
 for key,value in dicts.items():
@@ -128,11 +198,42 @@ def create_page(page_id):
         if child_id in dicts.keys():
             page['children'].append(create_node(child_id))
     return page
+
+
+def create_table(_id):
+    global dicts
+    table_str = ''
+    table_head = '|'
+    line_num = 0
+    for child in dicts[_id]['children']:
+        table_head += dicts[child]['key'][0] + '|'
+        if( len(dicts[child]['children']) != 0 ):#有孩子 表格内容
+            line_num = max( len(dicts[child]['children']),line_num )
+    table_head += '\n'#表头
+    table_str += table_head
+    #添加表格内容
+    for i in range(line_num):#加上i行内容
+        table_line = '|'
+        for child in dicts[_id]['children']:
+            grandson_id = dicts[child]['children'][i]
+            table_line += dicts[grandson_id]['key'][0] + '|'
+        table_line += '\n'
+        table_str += table_line
+    return table_str
+
+#创建logseq中的节点
 def create_node(_id):
     global dicts
     node = {}
     #print(page)
     node['string'] = ''
+    if 'css' in dicts[_id]:#表格或者kanban
+        if dicts[_id]['css'] == 'kanban':
+            node['string'] += '<kanban>'
+        if dicts[_id]['css'] == 'table':#table 比较难写
+            node['string'] = create_table(_id)
+            node['children'] = []
+            return node
     if 'uid' in dicts[_id]:
         node['uid'] = dicts[_id]['uid']
     content = dicts[_id]['key']#list
@@ -160,6 +261,16 @@ def create_node(_id):
                 else :#块引用
                     print('块引用')
                     node['string'] = node['string'] + ' ((' + dicts[num['_id']]['uid'] + '))'
+            elif 'url' in num:#图片
+                img_url = num['url']
+                api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
+                filename = download_img(img_url, api_token)
+                node['string'] += ' ![1_img.png](' + filename +')'
+    if 'rmcard' in dicts[_id]:  # 记忆卡片
+            node['string'] += '{{cloze' + dicts[_id]['value'][0] + '}} #card'
+    if 'rmblock' in dicts[_id]: #记忆块
+            node['string'] += ' #card'
+
     # if('references' in dicts[_id] ):
     #     node['uid'] = create_uid()
     #     print('node_uid:',node['uid'])
@@ -171,6 +282,7 @@ def create_node(_id):
                 children.append(create_node(childId))
     node['children'] = children
     return node
+
 
 lsq_list = []
 #lsq_dict['folderr'] = folderr

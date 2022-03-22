@@ -1,10 +1,6 @@
-## abstract
+---
 
-Remnote中的folder与page，page与block可以抽象为树中父节点与孩子节点的关系，又可以以dict的形式存储
-
-
-
-***
+---
 
 ## Remnote json 格式
 
@@ -43,9 +39,13 @@ children:[]
 
 ## 流程
 
-获取到所有节点，以_id为键值，将所有的节点重新存储一遍
+~~获取到所有节点，以_id为键值，将所有的节点重新存储一遍~~
 
-根据节点存储的关系，
+~~根据节点存储的关系，~~
+
+从doc中获取需要的信息存储到dicts中
+
+根据dicts中的信息，生成对应的logseq格式文件
 
 ### 2022.3.15 
 
@@ -111,7 +111,7 @@ children:[]
 
      
 
-2. **笔记中的双向链接问题**    remnote中引用的标识是：   （ ~~remnote中引用的时候会复制一份信息在json中~~）
+2. **笔记中的双向链接问题**    remnote中引用的标识是    ~~remnote中引用的时候会复制一份信息在json中~~
 
    *在remnote中块引用和文章引用写法一致*  ：
 
@@ -125,37 +125,291 @@ children:[]
    	"_id": "指向块的id",
    	"i": "q"
    },
-   块引用的话：被引用的块会有reference键值
-    "references": [
-                   {
-                       "q": "XkvNP5F7nxJBAAmYm",
-                       "f": "key"
-                   }
-               ]
    ```
 
-   - **冗余的信息需删除**   （references）
+   - **底部有冗余的信息可删除**         
 
-     - ```json
-       无用的链接信息含有键值 'rcrp' 或 'spo'（且仅这些节点里含有）
-       ```
+   ​                                                  
 
-       
+3. 记忆卡片
 
-   - ~~虽然是双向链接，但在logseq中只用在一边添加链接，另一边即可自己生成~~
-
-   - page引用只用在page名外加[[]]即可  page名是唯一标识
-
-   - block引用 不能(())加 block名  要生成一个 uid作为唯一标识 --- **当一个节点被别的节点引用时，需要一个uid**
-
-     - ~~logseq中进行块引用时，((uid))  不起作用~~  ：与文本内容 添加空格
-
+   ```json
+   {
+               "key": [
+                   "记忆卡片"
+               ],
+               "owner": "62248bb18a6b8000163a8a5d",
+               "children": [],
+               "subBlocks": [],
+               "portalsIn": [
+                   "xeu4icH3N4Drt3JSR"
+               ],
+               "createdAt": 1647826030720,
+               "u": 1647826043145,
+               "_id": "by4zcoJk7Bz5Td47A",
+               "parent": "xeu4icH3N4Drt3JSR",
+               "enableBackSR": true,
+               "efc": false,
+               "type": 1,
+               "value": [
+                   "记忆卡片内容"
+               ]
+           },
+   ```
 
    
 
-   记忆卡片问题
+4. 记忆块
 
-4. 
+   * **"type": 1,是记忆块和记忆卡片特有的键值 ，其中记忆卡片有value键值**
+   * 记忆块的children就是记忆块内容
+   
+5. 图片
+
+   ```json
+   "key":[
+       ""
+       {
+           "i": "i",
+           "url": "https://remnote-user-data.s3.amazonaws.com/sWotX47hAPQsNAD-ckIBtNyqJz3wfr-			2kNTvYZWPeqSWVhQihg5f56gUaF4GxufVygUMNfiOuvGOdvD15qaA0fRDcxnhDXG9uAbj9478k5mBISpCJqHSSv9Odxs0ysar.png",
+           "width": 764,
+           "height": 306,
+           "percent": 100,
+           "loading": false
+       },
+   ]
+   ```
+
+   
+
+6. table  ！！！！！！！
+
+   * logseq 插入的图片文件名有要求  ***暂时没有解决***
+
+     ```
+     ![1_img.png](../assets/1_img_1647950501980_0.png)
+     ![1_img.png](../assets/1_img_1_1647950072192_0.png)
+     ![1_img.png](../assets/1_img_1_1647950072392_0.png)
+     ![1_img.png](..\assets\1_img_1647950072192_0.png)
+     
+     ![1_img.png](../assets/1_img_1647951701037_0.png)  --手动修改的
+     ![1_img.png](../assets/1_img_1647951701034_0.png)  --自动生成的
+     ```
+
+     
+
+1. kanban
+
+2. Custom CSS
+
+   * 当使用table，kanban等css标签后，会有一个含有"rcrt": "c",的dict： 如下
+
+     ```
+       {
+                 "key": [
+                     "Custom CSS"
+                 ],
+                 "owner": "62248bb18a6b8000163a8a5d",
+                 "children": [
+                     "7KLYd4c87eADZ2rSn",
+                     "rrgRecGy48hmWsc6k",
+                     "vjLjqGHPwhq3afJHr"
+                 ],
+                 "subBlocks": [
+                     "7KLYd4c87eADZ2rSn",
+                     "vjLjqGHPwhq3afJHr",
+                     "rrgRecGy48hmWsc6k"
+                 ],
+                 "portalsIn": [],
+                 "createdAt": 1646562244502,
+                 "n": 1,
+                 "s": 1646886479774,
+                 "u": 1646887576057,
+                 "_id": "4yAmvvP2xFR3yPaSf",
+                 "parent": null,
+                 "rcrt": "c",
+                 "docUpdated": 1646887576057,
+                 "csb": {
+                     "rrgRecGy48hmWsc6k": {
+                         "rrgRecGy48hmWsc6k": [
+                             "6ueb8E9a99zS4f4Kh",
+                             "QpQenqb4s6v6WDxSm"
+                         ]
+                     },
+                     "7KLYd4c87eADZ2rSn": {
+                         "7KLYd4c87eADZ2rSn": true
+                     }
+                 }
+             },
+     ```
+
+     
+
+   * kanban、table 等属于Custom CSS的
+
+     其中**看板**："parent": "4yAmvvP2xFR3yPaSf", 父亲是Custom CSS
+
+     ```
+             {
+                 "_id": "7KLYd4c87eADZ2rSn",
+                 "key": [
+                     "kanban"
+                 ],
+                 "owner": "62248bb18a6b8000163a8a5d",
+                 "children": [
+                     "Wc8RAb822bDbXpgdG",
+                     "hxJLWv5uRcuhzfAxD",
+                     "gBWbRjvwtPe6DuRy5"
+                 ],
+                 "subBlocks": [
+                     "Wc8RAb822bDbXpgdG"
+                 ],
+                 "portalsIn": [
+                     "4yAmvvP2xFR3yPaSf"
+                 ],
+                 "createdAt": 1646886135547,
+                 "u": 1647826504378,
+                 "crt": {
+                     "r": {
+                         "s": {
+                             "_id": "gBWbRjvwtPe6DuRy5",
+                             "s": "H1",
+                             "v": [
+                                 {
+                                     "i": "q",
+                                     "_id": "5CFCGDjeDoXX9iZmq"
+                                 }
+                             ]
+                         }
+                     },
+                     "t": {
+                         "s": {
+                             "_id": "hxJLWv5uRcuhzfAxD",
+                             "s": "Unfinished",
+                             "v": [
+                                 {
+                                     "i": "q",
+                                     "_id": "FeYjyK35ToFrRrvtC"
+                                 }
+                             ]
+                         }
+                     }
+                 },
+                 "typeParents": [
+                     "26qj7Q83HkHscZcFi",
+                     "9v8idLoyn3t9RSARH"
+                 ],
+                 "excludedTypeParents": [],
+                 "parent": "4yAmvvP2xFR3yPaSf",
+                 "selectedInSearch": 6,
+                 "searchAliases": [],
+                 "typeChildren": [
+                     "TaH6DvF7Fw9grDng8",
+                     "5Gsq5kNkmnaZvznzY"
+                 ],
+                 "s": 1646886299504
+             },
+     ```
+
+     **表格**："parent": "4yAmvvP2xFR3yPaSf",  父亲是Custom CSS
+
+     ```
+             {
+                 "_id": "rrgRecGy48hmWsc6k",
+                 "key": [
+                     "column table  "
+                 ],
+                 "owner": "62248bb18a6b8000163a8a5d",
+                 "children": [
+                     "6ueb8E9a99zS4f4Kh",
+                     "k6YomDArd3QN5sfwe",
+                     "rti5hs3Em4Mobqfms",
+                     "QpQenqb4s6v6WDxSm"
+                 ],
+                 "subBlocks": [
+                     "QpQenqb4s6v6WDxSm",
+                     "6ueb8E9a99zS4f4Kh"
+                 ],
+                 "portalsIn": [
+                     "4yAmvvP2xFR3yPaSf"
+                 ],
+                 "createdAt": 1646801041266,
+                 "s": 1646832363110,
+                 "u": 1647826281106,
+                 "crt": {
+                     "r": {
+                         "s": {
+                             "_id": "rti5hs3Em4Mobqfms",
+                             "s": "H1",
+                             "v": [
+                                 {
+                                     "i": "q",
+                                     "_id": "5CFCGDjeDoXX9iZmq"
+                                 }
+                             ]
+                         }
+                     },
+                     "t": {
+                         "s": {
+                             "_id": "k6YomDArd3QN5sfwe",
+                             "s": "Unfinished",
+                             "v": [
+                                 {
+                                     "i": "q",
+                                     "_id": "FeYjyK35ToFrRrvtC"
+                                 }
+                             ]
+                         }
+                     }
+                 },
+                 "typeParents": [
+                     "26qj7Q83HkHscZcFi",
+                     "9v8idLoyn3t9RSARH"
+                 ],
+                 "excludedTypeParents": [],
+                 "parent": "4yAmvvP2xFR3yPaSf",
+                 "selectedInSearch": 12,
+                 "searchAliases": [],
+                 "typeChildren": [
+                     "QpQenqb4s6v6WDxSm",
+                     "RjecgDMoCgmqwA4Cs",
+                     "vG2dZMshQn7RNFKpf",
+                     "Nqkic7pyFvxnfF8yF"
+                 ],
+                 "tcsp": [
+                     "QpQenqb4s6v6WDxSm"
+                 ],
+                 "docUpdated": 1646827751965,
+                 "preMigrationTypeChildren": [
+                     "QpQenqb4s6v6WDxSm",
+                     "RjecgDMoCgmqwA4Cs",
+                     "CfH43q5LdyZvtRRxE",
+                     "vG2dZMshQn7RNFKpf"
+                 ]
+             },
+     ```
+
+   * 当某一block采用了某些CSS的时候，他的typeParents便是这些CSS的_id 构成的list，如采用了kanban的某一block：
+
+     ```
+     "typeParents": [
+                     "7KLYd4c87eADZ2rSn"
+                 ],
+     ```
+
+     
+
+### 文件夹下有文件夹
+
+文件夹特有键值：
+
+```json
+"forceIsFolder": true,
+```
+
+主文件夹是个page，其中包含对子文件夹的引用
+
+
 
 
 
@@ -166,24 +420,3 @@ children:[]
 #### 在remnote中，一次只能需要导出一个文件夹 
 
 当某笔记中有其他笔记的引用的时候需要按照文件夹导出
-
-
-
-
-
-
-
-
-
-
-
-
-
-文章引用---4693
-文章笔记2引用---4175
-块引用一级节点3  ---8995
-块笔记二级节点3.3引用 ---   9367
-文件夹引用  ---- 9605
-
-
-

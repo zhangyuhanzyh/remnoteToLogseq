@@ -1,7 +1,11 @@
 [
     {
-        "title": "floder",
+        "title": "folder",
         "children": [
+            {
+                "string": "[[test]]",
+                "children": []
+            },
             {
                 "string": "[[笔记2]]",
                 "children": []
@@ -9,6 +13,54 @@
             {
                 "string": "[[文章名称]]",
                 "children": []
+            }
+        ]
+    },
+    {
+        "title": "test",
+        "children": [
+            {
+                "string": "test_page2",
+                "children": [
+                    {
+                        "string": "page2的1",
+                        "children": [
+                            {
+                                "string": "page2的1.1",
+                                "children": []
+                            },
+                            {
+                                "string": "page2的1.2",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "page2的2",
+                        "children": []
+                    },
+                    {
+                        "string": "page2的3",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "test_page1",
+                "children": [
+                    {
+                        "string": "page1的1",
+                        "children": []
+                    },
+                    {
+                        "string": "page1的2",
+                        "children": []
+                    },
+                    {
+                        "string": "page1的3",
+                        "children": []
+                    }
+                ]
             }
         ]
     },
@@ -62,7 +114,7 @@
                     },
                     {
                         "string": "笔记二级节点3.3",
-                        "uid": "vIHMYzZq7",
+                        "uid": "sG1Pg96JX",
                         "children": []
                     }
                 ]
@@ -74,7 +126,7 @@
         "children": [
             {
                 "string": "一级节点1",
-                "uid": "bj2MUOrma",
+                "uid": "2qa1JQhSb",
                 "children": [
                     {
                         "string": "二级节点1.1",
@@ -118,7 +170,7 @@
             },
             {
                 "string": "一级节点3",
-                "uid": "1aHD6bA73",
+                "uid": "fbUiG9Kom",
                 "children": [
                     {
                         "string": "二级节点3.1",
@@ -144,7 +196,7 @@
             },
             {
                 "string": "一级节点6",
-                "uid": "ObPpCSNnh",
+                "uid": "i7lZ5zaOe",
                 "children": []
             },
             {
@@ -152,7 +204,7 @@
                 "children": []
             },
             {
-                "string": "块引用一级节点3 ((1aHD6bA73))  ",
+                "string": "块引用一级节点3 ((fbUiG9Kom))  ",
                 "children": []
             },
             {
@@ -164,12 +216,81 @@
                 "children": []
             },
             {
-                "string": "块笔记二级节点3.3引用 ((vIHMYzZq7)) ",
+                "string": "块笔记二级节点3.3引用 ((sG1Pg96JX)) ",
                 "children": []
             },
             {
-                "string": "文件夹引用[[floder]] ",
+                "string": "文件夹引用[[folder]] ",
                 "children": []
+            },
+            {
+                "string": "记忆卡片{{cloze记忆卡片内容}} #card",
+                "children": []
+            },
+            {
+                "string": "记忆块 #card",
+                "children": [
+                    {
+                        "string": "记忆块内容1",
+                        "children": []
+                    },
+                    {
+                        "string": "记忆块内容1",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "|表头1|表头2|表头3|\n|行1.1|行2.1|行3.1|\n|行1.2|行2.2|行3.2|\n",
+                "children": []
+            },
+            {
+                "string": "图片 ![1_img.png](../assets/1_img_1647951701034_0.png) ",
+                "children": []
+            },
+            {
+                "string": "<kanban>看板id  ",
+                "children": [
+                    {
+                        "string": "表头1",
+                        "children": [
+                            {
+                                "string": "行1.1",
+                                "children": []
+                            },
+                            {
+                                "string": "行1.2",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "表头2",
+                        "children": [
+                            {
+                                "string": "行2.1",
+                                "children": []
+                            },
+                            {
+                                "string": "行2.2",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "表头3",
+                        "children": [
+                            {
+                                "string": "行3.1",
+                                "children": []
+                            },
+                            {
+                                "string": "行3.2",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
