@@ -1,292 +1,485 @@
 [
     {
-        "title": "folder",
+        "title": "Computer Network",
         "children": [
             {
-                "string": "[[test]]",
+                "string": "[[整体]]",
                 "children": []
             },
             {
-                "string": "[[笔记2]]",
+                "string": "[[应用层]]",
                 "children": []
             },
             {
-                "string": "[[文章名称]]",
+                "string": "[[网络层]]",
+                "children": []
+            },
+            {
+                "string": "[[数据链路层 ]]",
                 "children": []
             }
         ]
     },
     {
-        "title": "test",
+        "title": "整体",
         "children": [
             {
-                "string": "test_page2",
-                "children": [
-                    {
-                        "string": "page2的1",
-                        "children": [
-                            {
-                                "string": "page2的1.1",
-                                "children": []
-                            },
-                            {
-                                "string": "page2的1.2",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "string": "page2的2",
-                        "children": []
-                    },
-                    {
-                        "string": "page2的3",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "test_page1",
-                "children": [
-                    {
-                        "string": "page1的1",
-                        "children": []
-                    },
-                    {
-                        "string": "page1的2",
-                        "children": []
-                    },
-                    {
-                        "string": "page1的3",
-                        "children": []
-                    }
-                ]
+                "string": " ![1_img.png](../assets/1_img_1647951701034_0.png) ",
+                "children": []
             }
         ]
     },
     {
-        "title": "笔记2",
+        "title": "应用层",
+        "children": []
+    },
+    {
+        "title": "网络层",
         "children": [
             {
-                "string": "笔记一级节点1",
-                "children": [
-                    {
-                        "string": "笔记二级节点1.1",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点1.2",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点1.3",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "笔记一级节点2",
-                "children": [
-                    {
-                        "string": "笔记二级节点2.1",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点2.2",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点2.3",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "笔记一级节点3",
-                "children": [
-                    {
-                        "string": "笔记二级节点3.1",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点3.2",
-                        "children": []
-                    },
-                    {
-                        "string": "笔记二级节点3.3",
-                        "uid": "sG1Pg96JX",
-                        "children": []
-                    }
-                ]
+                "string": "网络层概述",
+                "children": []
             }
         ]
     },
     {
-        "title": "文章名称",
+        "title": "数据链路层 ",
         "children": [
             {
-                "string": "一级节点1",
-                "uid": "2qa1JQhSb",
+                "string": "数据链路层概述",
                 "children": [
                     {
-                        "string": "二级节点1.1",
+                        "string": "**链路**  {{cloze 就是从一个结点到相邻结点的一段物理线路，而中间没有其他任何的交换结点}} #card",
+                        "children": []
+                    },
+                    {
+                        "string": "**数据链路** ：是指把实现通信协议的硬件和软件加到链路上，就构成了数据链路",
+                        "children": []
+                    },
+                    {
+                        "string": "数据链路层以 **帧**  为单位传输和处理数据 ",
+                        "children": []
+                    },
+                    {
+                        "string": "数据链路层的三个重要问题",
                         "children": [
                             {
-                                "string": "三级节点1.1.1",
+                                "string": " ((tdq9lO78r)) ",
                                 "children": []
                             },
                             {
-                                "string": "三级节点1.1.2 ",
+                                "string": " ((JO9ftnS1c)) ",
+                                "children": []
+                            },
+                            {
+                                "string": " ((WpcG0jdoi))尽管误码是不能完全避免的，但若能实现发送方发送什么，接收方就能收到什么，就称为可靠传输  #card",
                                 "children": []
                             }
                         ]
                     },
                     {
-                        "string": "二级节点1.2 ",
+                        "string": "使用点对点信道的数据链路层 ↑",
                         "children": []
                     },
                     {
-                        "string": "二级节点1.3",
+                        "string": "使用广播信道的数据链路层（共享式局域网）",
+                        "children": []
+                    },
+                    {
+                        "string": "无线局域网",
                         "children": []
                     }
                 ]
             },
             {
-                "string": "一级节点2",
+                "string": "封装成帧 ",
+                "uid": "tdq9lO78r",
                 "children": [
                     {
-                        "string": "二级节点2.1",
-                        "children": []
-                    },
-                    {
-                        "string": "二级节点2.2",
-                        "children": []
-                    },
-                    {
-                        "string": "二级节点2.3",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "一级节点3",
-                "uid": "fbUiG9Kom",
-                "children": [
-                    {
-                        "string": "二级节点3.1",
-                        "children": []
-                    },
-                    {
-                        "string": "二级节点3.2",
-                        "children": []
-                    },
-                    {
-                        "string": "二级节点3.3",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "一级节点 ",
-                "children": []
-            },
-            {
-                "string": "一级节点5",
-                "children": []
-            },
-            {
-                "string": "一级节点6",
-                "uid": "i7lZ5zaOe",
-                "children": []
-            },
-            {
-                "string": "**加粗** *斜体* <u>下划线</u> <highlight>颜色</highlight> $W_{T}$ ",
-                "children": []
-            },
-            {
-                "string": "块引用一级节点3 ((fbUiG9Kom))  ",
-                "children": []
-            },
-            {
-                "string": "文章引用[[笔记2]] ",
-                "children": []
-            },
-            {
-                "string": "文章笔记2引用[[笔记2]] ",
-                "children": []
-            },
-            {
-                "string": "块笔记二级节点3.3引用 ((sG1Pg96JX)) ",
-                "children": []
-            },
-            {
-                "string": "文件夹引用[[folder]] ",
-                "children": []
-            },
-            {
-                "string": "记忆卡片{{cloze记忆卡片内容}} #card",
-                "children": []
-            },
-            {
-                "string": "记忆块 #card",
-                "children": [
-                    {
-                        "string": "记忆块内容1",
-                        "children": []
-                    },
-                    {
-                        "string": "记忆块内容1",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "string": "|表头1|表头2|表头3|\n|行1.1|行2.1|行3.1|\n|行1.2|行2.2|行3.2|\n",
-                "children": []
-            },
-            {
-                "string": "图片 ![1_img.png](../assets/1_img_1647951701034_0.png) ",
-                "children": []
-            },
-            {
-                "string": "<kanban>看板id  ",
-                "children": [
-                    {
-                        "string": "表头1",
+                        "string": "封装成帧是指数据链路层给上层交付的协议数据单元添加帧头和帧尾使之成为帧",
                         "children": [
                             {
-                                "string": "行1.1",
+                                "string": "帧头和帧尾中含有重要的控制信息 ",
                                 "children": []
                             },
                             {
-                                "string": "行1.2",
+                                "string": "帧头和帧尾的作用之一就是**帧定界**  ",
                                 "children": []
                             }
                         ]
                     },
                     {
-                        "string": "表头2",
+                        "string": "透明传输是指 **数据链路层对上层交付的传输数据没有任何限** ，就好像数据链路层不存在一样",
                         "children": [
                             {
-                                "string": "行2.1",
+                                "string": "例： 在上层交付的传输数据中的 *帧定界符*  和 *转义字符*  前添加转义字符",
                                 "children": []
                             },
                             {
-                                "string": "行2.2",
+                                "string": "面向字节的物理链路使用字节填充（或称字符填充）的方法实现透明传输",
+                                "children": []
+                            },
+                            {
+                                "string": "面向比特的物理链路使用比特填充的方法实现透明传输",
                                 "children": []
                             }
                         ]
                     },
                     {
-                        "string": "表头3",
+                        "string": "为了提高帧的传输效率，应当使 **帧的数据部分的长度尽可能大些**  ",
+                        "children": []
+                    },
+                    {
+                        "string": "考虑到差错控制等多种因素，每一种数据链路层协议都规定了帧的数据部分的长度上线，及 **最大传送单元MTU**  ",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "差错检测",
+                "uid": "JO9ftnS1c",
+                "children": [
+                    {
+                        "string": "实际的通信链路都不是理想的，比特在传输过程中可能会产生差错：1可能会变成0，而0可能变成1.这成**为比特差错**  ",
+                        "children": []
+                    },
+                    {
+                        "string": "在一段时间内，传输错误的比特所占比特总数的比率称为**误码率BER** （Bit Error Rate）",
+                        "children": []
+                    },
+                    {
+                        "string": "使用**差错检测码** 来检测数据在传输过程中是否产生了比特差错，是数据链路层所要解决的重要问题之一。",
+                        "children": []
+                    },
+                    {
+                        "string": "奇偶校验",
                         "children": [
                             {
-                                "string": "行3.1",
+                                "string": "再待发送的数据后面添加1位奇偶校验位，使整个数据（包括所添加的校验位在内）中**”1“的个数** 为奇数（奇校验）或偶数（偶校验） 。",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "循环冗余校验CRC（Cyclic Redundancy Check）",
+                        "children": [
+                            {
+                                "string": "收发双方约定好一个***生成多项式G*** （x）；",
                                 "children": []
                             },
                             {
-                                "string": "行3.2",
+                                "string": "发送方基于待发送的数据和生成多项式计算出有差错检测码（***冗余码*** ），将其添加到待传输数据的后面一起传输；",
                                 "children": []
+                            },
+                            {
+                                "string": "接收方通过生成多项式来计算收到的数据是否产生了误码；",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "**检错码** 只能检测出帧在传输过程中出现了差错，但不能定位错误，因此**无法纠正错误** 。",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "string": "可靠传输",
+                "uid": "WpcG0jdoi",
+                "children": [
+                    {
+                        "string": "可靠传输的基本概念",
+                        "children": [
+                            {
+                                "string": "使用**差错检测技术** （例如循环冗余校验CRC），接收方的数据链路层就可检测出帧在传输过程中是否产生了**误码** （比特错误）",
+                                "children": []
+                            },
+                            {
+                                "string": "数据链路层向上层提供的服务类型",
+                                "children": [
+                                    {
+                                        "string": "***不可靠传输服务*** ：***仅仅丢弃有误码的帧*** ，其他什么也不做；",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "***可靠传输服务*** ：想想办法实现***发送端发送什么，接收端就收到什么。***  ",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "一般情况下， **有线链路**  的误码率比较低，为了减小开销，并**不要求数据链路层** 向上提供**可靠** 传输服务。即使出现了误码，可靠传输的问题由上层处理。",
+                                "children": []
+                            },
+                            {
+                                "string": "**无线链路** 易受干扰，误码率比较高，因此**要求数据链路层** 必须向上层提供可靠传输服务。",
+                                "children": []
+                            },
+                            {
+                                "string": "**比特差错** 只是传输差错中的一种。",
+                                "children": []
+                            },
+                            {
+                                "string": "从整个计算机网络体系结构来看，传输差错还包括**分组丢失** 、**分组失序** 以及**分组重复** 。",
+                                "children": []
+                            },
+                            {
+                                "string": "分组丢失、分组失序一i及分组重复这些传输差错，一般不会出现在数据链路层，而会出现在其上层。",
+                                "children": []
+                            },
+                            {
+                                "string": "**可靠传输服务并不仅局限于数据链路层** ，其他各层均可选择实现可靠传输。",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "可靠传输的实现机制 ‒‒‒ 停止-等待协议SW（Stop-and-Wait）    ",
+                        "children": [
+                            {
+                                "string": "接收端检测到分组有误码时，将其丢弃并等待发送方的超时重传。但对于误码率较高的点对点链路，为使对方尽早重传，也可给发送方发送NAK分组。",
+                                "children": []
+                            },
+                            {
+                                "string": "为了让接收方能够判断所收到的数据分组是否是重复的，需要给数据分组编号。由于停止-等待协议的停等特性，只需要1个比特编号就够了，即编号0和1.",
+                                "children": []
+                            },
+                            {
+                                "string": "为了让发送方能够判断所收到的ACK分组是否是重复的，需要给ACK分组编号，由于比特数量与数据分组编号所用比特数量一样。数据链路层一般不会出现ACK分组迟到的情况，因此在数据链路层实现停止-等待协议可以不用给ACK分组编号。",
+                                "children": []
+                            },
+                            {
+                                "string": "超时计时器设置的重传时间应仔细选择。一般可将重传时间选为略大于”从发送放到接收方的平均往返时间“。",
+                                "children": [
+                                    {
+                                        "string": "在数据链路层点对点的往返时间比较确定，重传时间比较好设定。",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "然而在运输层，由于端到端往返时间非常不确定，设置合适的重传时间有时并不容易。",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "当往返时延RTT远大于数据帧发送时延Td时（例如卫星链路），信道利用率非常低。",
+                                "children": []
+                            },
+                            {
+                                "string": "若出现重传，则对于传送有用的数据信息来说，信道利用率还要降低。",
+                                "children": []
+                            },
+                            {
+                                "string": "为了克服停止等待协议信道利用率很低的缺点，就产生了另外两种协议，即后退N帧协议GBN和选择重传协议SR。",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "可靠传输的实现机制 ‒‒‒ 回退N帧协议GBN（Go-Back-N）",
+                        "children": [
+                            {
+                                "string": "累计确认 {{cloze 接收方不一定要对收到的数据分组逐个发送确认，而可以在收到几个数据分组后（由具体实现决定），对按序到达的最后数据分组发送确认。}} #card",
+                                "children": []
+                            },
+                            {
+                                "string": "|*发送方*|*接收方*|\n|发送窗口尺寸 $W_{T}$  的取值范围是 $1<W_{T} \\le 2^n$，其中N是构成分组序号的比特数量 |接收方的接收窗口尺寸 $W_{R}$ 的取值范围是  $W_{R}=1$ 因此接收方只能按序接受数据分组。|\n| $\\Box W_{T}>2^n -1$ 接收方无法分辨新、旧数据分组 |接收方只接受序号落在接受窗口内并且无误码的数据分组，并且将接受窗口向前滑动一个位置，与此同时给发送方发送回应的确认分组。为了减少开销，接收方不一定每收到一个按序到达且无误码的数据分组就给发送方发回一个确认分组，|\n| $\\Box W_{T}=1$ 停止-等待协议| $\\Box$捎带确认|\n|发送方可在未收到接收方确认分组的情况下，奖序号落在发送窗口内的多个数据分组全部发送出去；| $\\Box$累计确认|\n|发送方只有收到对已发送数据分组的确认时，发送窗口才能向前相应滑动；| |\n|发送方收到多个重复确认时，可在重传计时器超时前尽早开始重传，由具体实现决定。| |\n|发送发发送窗口内某个已发送的数据分组也必须全部重传，这就是回退N帧协议名称的由来。| |\n",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "选择重传协议SR",
+                        "children": [
+                            {
+                                "string": "采用3个比特给分组编序号，即序号0-7；",
+                                "children": []
+                            },
+                            {
+                                "string": "发送窗口的尺寸$W_{T}$  的取值$1<W_{T}\\le 2^{3-1}$ ,本例取$W_{T}=4$ ",
+                                "children": []
+                            },
+                            {
+                                "string": "接受窗口的尺寸$W_{R}$  的取值$W_{R}=W_{T}=4$  ",
+                                "children": []
+                            },
+                            {
+                                "string": "|*发送方 *|*接收方*|\n|发送窗口尺寸 $W_{T}$ 的取值范围是 $1<W_{T} \\le 2^{n-1}$ ,其中，n是构成分组序号的比特数量。|接收窗口尺寸 $W_{R}$ 的取值范围是 $1<W_{R}\\le W_{T}$ |\n|发送方可在未收到接收方确认分组的情况下，将序号落在发送窗口内的多个数据分组全部发送出去；| $\\Box W_{R}>W_{T}$ 无意义|\n|发送方只有按需收到对已发送数据分组的确认时，发送窗口才能向前相应滑动；若收到未按序到达的确认分组时，对其进行记录，以防止其相应数据分组的超时重发，但发送窗口不能向前滑动。| $\\Box W_{R}=1$ 与停止-等待协议相同|\n| |接收方可接受到为按序到达但没有误码并且序号落在接收窗口内的数据分组；|\n| | $\\Box$为了使发送方仅重传出现差错的分组，接收方不再使用累计确认，而需要对每个正确接收到的数据分组进行逐一确认！|\n| |接收方只有在收到按序接收数据分组后，接收窗口才能向前相应滑动。|\n",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "点对点协议PPP",
+                        "children": [
+                            {
+                                "string": "$\\blacksquare$  点对点协议PPP（Point-to-Point Protocol）是目前使用最广泛的点对点数据链路层协议。",
+                                "children": []
+                            },
+                            {
+                                "string": "$\\blacksquare$  帧格式",
+                                "children": [
+                                    {
+                                        "string": " ![1_img.png](../assets/2_img_1647951701034_0.png) ",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "$\\blacksquare$  *** PPP帧透明传输***   #card",
+                                "children": [
+                                    {
+                                        "string": "面向字节的异步链路 {{cloze 字节填充法‒‒插入转义字符}} #card",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "面向比特的同步链路 {{cloze 比特填充法 ‒‒插入\"比特0\"}} #card",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "$\\blacksquare$  差错检测 #card",
+                                "children": [
+                                    {
+                                        "string": "CRC检测",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "$\\blacksquare$  工作状态",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "string": "媒体接入控制MAC（Medium Access Control)",
+                        "children": [
+                            {
+                                "string": "媒体接入控制的基本概念",
+                                "children": [
+                                    {
+                                        "string": " ![1_img.png](../assets/3_img_1647951701034_0.png) ",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "静态划分信道",
+                                "children": [
+                                    {
+                                        "string": "$\\Box$  频分复用FDM {{cloze 频分复用的用户同时占用不同的频带资源并行通信}} #card",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "$\\Box$  时分复用TDM {{cloze 时分复用的所有用户在不同的时间占用同样的频带宽度}} #card",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "$\\Box$  波分复用WDM {{cloze 光的频分复用}} #card",
+                                        "children": []
+                                    },
+                                    {
+                                        "string": "$\\Box$  码分复用 CDM {{cloze }} #card",
+                                        "children": [
+                                            {
+                                                "string": "$\\triangle$  用于多址接入，人们更常用的名词是CDMA（Code Division Multiple Access）",
+                                                "children": []
+                                            },
+                                            {
+                                                "string": "$\\triangle$   CDM的每一个用户可以***在同样的时间使用同样的频带进行通信***  ",
+                                                "children": []
+                                            },
+                                            {
+                                                "string": "$\\triangle$   由于各用户使用经过特殊挑选的不同码型，因此各用户之间不会造成干扰。",
+                                                "children": []
+                                            },
+                                            {
+                                                "string": "$\\Diamond$  每一个站被指派唯一的一个m bit码片序列",
+                                                "children": [
+                                                    {
+                                                        "string": "$\\diamond$  一个站如果发送***比特1*** ，则***发送它自己的m bit码片序列*** ；",
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "string": "$\\diamond$  一个站如果发送***比特0*** ，则***发送它自己的m bit码片序列的二进制反码 ***  ",
+                                                        "children": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "string": "$\\Diamond$  码片序列的挑选原则 #card",
+                                                "children": [
+                                                    {
+                                                        "string": "1.码片序列必须各不相同。",
+                                                        "children": []
+                                                    },
+                                                    {
+                                                        "string": "2.码片序列必须相互正交（规格化内积为0）",
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "string": "动态接入控制‒‒‒‒随机接入",
+                                "children": [
+                                    {
+                                        "string": "载波监听多址接入/碰撞检测CSMA/CD（Carrier Sense Multiple Access/Collosion Detection） #card",
+                                        "children": [
+                                            {
+                                                "string": "CSMA/CD ",
+                                                "children": [
+                                                    {
+                                                        "string": "多址接入MA",
+                                                        "children": [
+                                                            {
+                                                                "string": "$\\blacksquare$ 多个站连接在一条总线上，竞争使用总线",
+                                                                "children": []
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "string": "载波监听CS",
+                                                        "children": [
+                                                            {
+                                                                "string": "$\\blacksquare$  每一个站在发送帧之前先要检测一下总线上是否有其他站点在发送帧（”先听后说“）",
+                                                                "children": [
+                                                                    {
+                                                                        "string": "$\\Box$  若检测到总线空闲96比特时间，则发送到这个帧",
+                                                                        "children": []
+                                                                    },
+                                                                    {
+                                                                        "string": "$\\Box$  若检测到总线忙，则继续检测并等待总线转为空闲96比特时间，然后发送这个帧。",
+                                                                        "children": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "string": "碰撞检测CD ",
+                                                        "children": [
+                                                            {
+                                                                "string": "$\\blacksquare$  每一个正在发送帧的站边发送边检测碰撞（“边说边听”）：",
+                                                                "children": [
+                                                                    {
+                                                                        "string": "$\\Box$  一旦发现总线上出现碰撞，则立即停止发送，退避一段随机时间后再次发送（“一旦      冲突，立即停说，等待时机，重新再说”）。",
+                                                                        "children": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }

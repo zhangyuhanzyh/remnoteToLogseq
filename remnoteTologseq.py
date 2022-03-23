@@ -19,7 +19,7 @@ import os
 以字典的形式存储
 获取主要的笔记信息，在docs中
 '''
-with open('rem4.json','r',encoding='utf-8') as file:
+with open('cn.json','r',encoding='utf-8') as file:
     remjson_dict = json.load(file)
 #print(remjson_dict)
 
@@ -127,7 +127,7 @@ for doc in docs:
         #将节点存入到节点字典中后判断该节点类型
         #print(dicts[_id])
 
-        if ('references' in doc.keys()) :#被引用过
+        if ('references' in doc.keys()) and (len(doc['references'])!= 0 ) :#被引用过
             dicts[_id]['references'] = doc['references']
             dicts[_id]['uid'] = create_uid()
         if ('type' in doc) and (doc['type'] == 1):#记忆卡片或记忆块 (此处用and可以，短路逻辑，但&不行）
@@ -140,11 +140,14 @@ for doc in docs:
         if ('rcrt' in doc) and (doc['rcrt'] == 'c'):#Custom CSS
             Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
             continue
+        if ('rcrt' in doc) and (doc['rcrt'] == 'i'): #list Item
+            #Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
+            continue
         if ('typeParents' in doc):
-            if ('kanban' in Custom_css) and  (doc['typeParents'][0]== Custom_css['kanban']):
+            if ('kanban' in Custom_css) and (  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0]== Custom_css['kanban']):
                 dicts[_id]['css'] = 'kanban'
                 print('kanban-----------------------------------')
-            if ('table' in Custom_css) and (doc['typeParents'][0] == Custom_css['table']):
+            if ('table' in Custom_css) and(  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0] == Custom_css['table']):
                 dicts[_id]['css'] = 'table'
                 print('table-----------------------------------')
         judge(_id)
@@ -206,17 +209,28 @@ def create_table(_id):
     table_head = '|'
     line_num = 0
     for child in dicts[_id]['children']:
-        table_head += dicts[child]['key'][0] + '|'
+        table_head += '*' + dicts[child]['key'][0] + '*|'
         if( len(dicts[child]['children']) != 0 ):#有孩子 表格内容
             line_num = max( len(dicts[child]['children']),line_num )
     table_head += '\n'#表头
     table_str += table_head
+    print('table的长度',line_num)
     #添加表格内容
     for i in range(line_num):#加上i行内容
         table_line = '|'
         for child in dicts[_id]['children']:
-            grandson_id = dicts[child]['children'][i]
-            table_line += dicts[grandson_id]['key'][0] + '|'
+            if len(dicts[child]['children']) >= i+1:
+                grandson_id = dicts[child]['children'][i]
+                print('_++___+_+__+_+_+_+',dicts[grandson_id]['key'][0])
+                #表格内容可能有latex
+                for ct in dicts[grandson_id]['key']:
+                    if isinstance(ct,dict) :
+                        table_line += ' $' + ct['text'].strip() + '$'
+                    elif isinstance(ct,str):
+                        table_line += ct
+                table_line +=  '|'
+            else:
+                table_line += ' |'
         table_line += '\n'
         table_str += table_line
     return table_str
@@ -239,7 +253,7 @@ def create_node(_id):
     content = dicts[_id]['key']#list
     #识别文本内容中的markdown内容 list元素只有两种情况 ：一个字符串  或  一个及以上 字典
     for num in content:
-        if isinstance(num,str) & len(content) == 1:
+        if isinstance(num,str):
             node['string'] += num   ### 注意可能会被修改
         elif isinstance(num,dict):
             #print("特殊格式")
@@ -252,24 +266,31 @@ def create_node(_id):
             elif 'u' in num:#下划线
                 node['string'] = node['string'] + '<u>' + num['text'] + '</u>' + ' '
             elif 'h' in num:#高亮
-                node['string'] = node['string'] + '<highlight>' + num['text'] + '</highlight>' + ' '
+                node['string'] = node['string'] + '***' + num['text'] + '***' + ' '
             elif 'type' in num :#latex
-                node['string']  = node['string'] + '$' + num['text'] + '$' + ' '
+                node['string']  = node['string'] + '$' + num['text'].strip() + '$' + ' '
             elif num['i'] == "q":#引用
                 if (flag[num['_id']] == 'folder') | (flag[num['_id']] == 'page'): #该引用是floder或page
                     node['string'] = node['string'] + '[[' + dicts[num['_id']]['key'][0] + ']]'
                 else :#块引用
                     print('块引用')
                     node['string'] = node['string'] + ' ((' + dicts[num['_id']]['uid'] + '))'
+            elif 'qId' in num:#超链接
+                node['string'] = node['string'] + ' ((' + dicts[num['qId']]['uid'] + '))'
             elif 'url' in num:#图片
                 img_url = num['url']
                 api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
                 filename = download_img(img_url, api_token)
                 node['string'] += ' ![1_img.png](' + filename +')'
     if 'rmcard' in dicts[_id]:  # 记忆卡片
-            node['string'] += '{{cloze' + dicts[_id]['value'][0] + '}} #card'
+        print('+++++++++++++++++++++++++++',dicts[_id])
+        #记忆卡片为空做个判断
+        if dicts[_id]['value']:
+            node['string'] += ' {{cloze ' + dicts[_id]['value'][0] + '}} #card'#前面也需加上一个空格
+        else:
+            node['string'] += ' {{cloze ' + '' + '}} #card'
     if 'rmblock' in dicts[_id]: #记忆块
-            node['string'] += ' #card'
+        node['string'] += ' #card'
 
     # if('references' in dicts[_id] ):
     #     node['uid'] = create_uid()
