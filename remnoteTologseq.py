@@ -19,7 +19,7 @@ import os
 以字典的形式存储
 获取主要的笔记信息，在docs中
 '''
-with open('cn.json','r',encoding='utf-8') as file:
+with open('all.json','r',encoding='utf-8') as file:
     remjson_dict = json.load(file)
 #print(remjson_dict)
 
@@ -67,15 +67,27 @@ def download_img(img_url, api_token):
 '''
 flag = {}
 dicts = {}
+folders = [] #所有的folder id
+Page = [] # 不属于folder的 page id
 #判断是page或folder或block
 def judge(id):
     global dicts
     print('judge:',id)
     if "forceIsFolder" in dicts[id]:
         flag[id] = "folder"
+
+        folders.append(id)#以文件夹为根，生成笔记
         return
     #此处如果不以文件夹为单位导出，第一个就没有键值
-    if flag[ dicts[id]['parent'] ] == "folder":
+    #有不在文件夹下面的page
+    if not 'parent' in dicts[id]:
+        flag[id] = 'page'
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
+        Page.append(id)
+        return
+
+    print(dicts[id])
+    if   (dicts[id]['parent'] in flag) and (flag[ dicts[id]['parent'] ] == "folder"):
         flag[id] = "page"
         return
     flag[id] = 'block'
@@ -124,6 +136,7 @@ for doc in docs:
             dicts[doc['_id']] = {'key': key, 'children': children}
         if "forceIsFolder" in doc:
             dicts[_id]['forceIsFolder'] = doc['forceIsFolder']
+            flag[_id] = 'folder'
         #将节点存入到节点字典中后判断该节点类型
         #print(dicts[_id])
 
@@ -150,7 +163,8 @@ for doc in docs:
             if ('table' in Custom_css) and(  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0] == Custom_css['table']):
                 dicts[_id]['css'] = 'table'
                 print('table-----------------------------------')
-        judge(_id)
+for key in dicts.keys():
+    judge(key)
 #打印字典键值及内容
 #print(len(dicts))
 for key,value in dicts.items():
@@ -176,24 +190,48 @@ lsq_list 中包含多个 lsq_dict (folder 中 包含多个 page)
 用一个递归函数创造节点
 '''
 
-def create_folder(pages):
-    global folderr_id
-    page = {}
-    page['title'] = dicts[folderr_id]['key'][0] #folder名字
+lsq_list = [] #以page/folder（dict）为元素的list
+
+
+def create_folder(folder_id):#创建文件夹(dict)   在logseq中 folder是特殊的page
+    global dicts
+    page= {}
+    page['title'] = dicts[folder_id]['key'][0].rstrip()
     page['children'] = []
-    for page_id in pages:
-        if page_id in dicts.keys():
+    for child in dicts[folder_id]['children']:
+        if not child in dicts:
+            continue
+        if flag[child] == 'page':#folder下面的page 是一个链接
             block = {}
-            print(dicts[page_id]['key'][0])
-            block["string"] = '[[' + dicts[page_id]['key'][0] + ']]'#page 引用
-            block["children"] = []
+            block['string'] = '[[' + dicts[child]['key'][0].strip() + ']]'
+            block['children'] = []
             page['children'].append(block)
+            lsq_list.append( create_page(child) )
+        elif flag[child] == 'block':#很少会
+            page['children'].append(create_node(child))
+        elif flag[child] == 'folder':#folder 下面有folder，是一个链接
+            block = {}
+            block['string'] = '[[' + dicts[child]['key'][0] + ']]'
+            block['children'] = []
+            #create_folder(child)
     return page
+    # global folderr_id
+    # page = {}
+    # page['title'] = dicts[folderr_id]['key'][0] #folder名字
+    # page['children'] = []
+    # for page_id in pages:
+    #     if page_id in dicts.keys():
+    #         block = {}
+    #         print(dicts[page_id]['key'][0])
+    #         block["string"] = '[[' + dicts[page_id]['key'][0] + ']]'#page 引用
+    #         block["children"] = []
+    #         page['children'].append(block)
+    # return page
 #返回一个page(dict)
 def create_page(page_id):
     global dicts
     page = {}
-    page['title'] = dicts[page_id]['key'][0] #title
+    page['title'] = dicts[page_id]['key'][0].strip() #title
     page['children'] = [] #子block
     #当前page有 子块
     childs_id = dicts[page_id]['children']
@@ -305,22 +343,32 @@ def create_node(_id):
     return node
 
 
-lsq_list = []
+
+#每个文件夹为根，生成笔记树
+for folder in folders:
+    lsq_list.append( create_folder(folder) )
+print(Page)
+for page in Page:#没有folder的page
+    if page in dicts.keys() and dicts[page]['key']:
+        lsq_list.append(create_page(page))
+
 #lsq_dict['folderr'] = folderr
 #lsq_dict['children'] = []
-pages = dicts[folderr_id]['children'] #list ---存储各page的_id
-if pages:#folder下面有page
-    folder_page = create_folder(pages)#返回一个folder_page(dict)
-    lsq_list.append(folder_page)
-if pages:#有笔记page，创造page，返回一个dict
-    for page in pages:
-        if page in dicts.keys():#有的话创建一个笔记page（dict）
-            print('page:',page)
-            lsq_list.append(create_page(page))
+# pages = dicts[folderr_id]['children'] #list ---存储各page的_id
+# if pages:#folder下面有page   创建文件夹（在logseq中是一个page）
+#     folder_page = create_folder(pages)#返回一个folder_page(dict)
+#     lsq_list.append(folder_page)
+# if pages:#有笔记page，创造page，返回一个dict
+#     for page in pages:
+#         if page in dicts.keys():#有的话创建一个笔记page（dict）
+#             print('page:',page)
+#             lsq_list.append(create_page(page))
             #lsq_dict['children'].append(create_node(page))
 
 print(lsq_list)
+print(folders)
 
+print(flag['5wY7T7m9FGeDMXiGz'])
 #logseq_roam.json可以识别的json都是[]中
 
 
