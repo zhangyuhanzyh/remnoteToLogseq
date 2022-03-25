@@ -16,13 +16,13 @@
   * 表格(table)
     * remnote中，table采用CSS样式生成，需要自己添加。
     * logseq中，table采用markdown语法。
-    * 目前表格中支持latex语法，不支持markdown语法。
+    * 目前表格中支持latex语法和markdown语法。
   * 记忆卡片和记忆块
   * 图片 (会将remnote图床中的图片下载到本地)
     *  ~~在logseq中插入图片的时候可能会引用失效，猜测是和图片名有关系，目前没有解决~~
     * 遇到失效的情况建议手动将图片拖动到该处
 * remnote特有格式及处理方法：
-  * 高亮：会在高亮内容的两端加上 highlight> </highlight
+  * 高亮：会将高亮内容的两端加上 粗斜体
   * 文件夹： remnote中的文件夹在logseq中体现为：含有对应**笔记链接**的**page**
   * kanban：在kanban块前面加上 kanban
 
