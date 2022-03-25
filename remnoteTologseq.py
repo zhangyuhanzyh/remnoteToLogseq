@@ -80,7 +80,7 @@ def judge(id):
         return
     #此处如果不以文件夹为单位导出，第一个就没有键值
     #有不在文件夹下面的page
-    if not 'parent' in dicts[id]:
+    if not 'parent' in dicts[id] or dicts[id]['parent'] == None:
         flag[id] = 'page'
         print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
         Page.append(id)
@@ -113,6 +113,11 @@ for doc in docs:
             continue
         children = doc['children']  # 列表，存储的是该节点的子节点_id
         if (len(key) == 0 | len(children) ==0 ):#remnote中最后会有空节点
+            continue
+            # list Item, Edit Later,Automatically Sort,Document Sidebar,Disable Descendant Cards,Highlight,Header,Quick Add,to do,~,Source List,Document,Extra Card Detail,Card Item,Auto....tmp,Timestamp
+        if ('rcrt' in doc) and (doc['rcrt'] == 'i' or doc['rcrt'] == 'e' or doc['rcrt'] == 'a' or doc['rcrt'] == 's' or doc['rcrt'] == 'u' or doc['rcrt'] == 'h' or doc['rcrt'] == 'r' or doc['rcrt'] == 'q' or doc['rcrt'] == 't' or doc['rcrt'] == 'l' or doc['rcrt'] == 'os' or doc['rcrt'] == 'o' or doc['rcrt'] == 'x' or doc['rcrt'] == 'w' or doc['rcrt'] == 'm'):
+            continue
+        if ('rcrs' in doc):
             continue
         #key_str = '' #列表内容拼接为字符串
         #keyStr = [str(i) for i in key]
@@ -153,9 +158,7 @@ for doc in docs:
         if ('rcrt' in doc) and (doc['rcrt'] == 'c'):#Custom CSS
             Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
             continue
-        if ('rcrt' in doc) and (doc['rcrt'] == 'i'): #list Item
-            #Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
-            continue
+
         if ('typeParents' in doc):
             if ('kanban' in Custom_css) and (  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0]== Custom_css['kanban']):
                 dicts[_id]['css'] = 'kanban'
@@ -263,7 +266,14 @@ def create_table(_id):
                 #表格内容可能有latex
                 for ct in dicts[grandson_id]['key']:
                     if isinstance(ct,dict) :
-                        table_line += ' $' + ct['text'].strip() + '$'
+                        if 'x' in ct:#latex
+                            table_line += ' $' + ct['text'].strip() + '$'
+                        elif 'b' in ct :
+                            table_line += ' **' + ct['text'].strip() + '**'
+                        elif 'l' in ct :
+                            table_line += ' *' + ct['text'].strip() + '*'
+                        elif 'u' in ct :
+                            table_line += ' <u>' + ct['text'].strip() + '</u>>'
                     elif isinstance(ct,str):
                         table_line += ct
                 table_line +=  '|'
@@ -308,6 +318,8 @@ def create_node(_id):
             elif 'type' in num :#latex
                 node['string']  = node['string'] + '$' + num['text'].strip() + '$' + ' '
             elif num['i'] == "q":#引用
+                if not num['_id'] in flag:
+                    continue
                 if (flag[num['_id']] == 'folder') | (flag[num['_id']] == 'page'): #该引用是floder或page
                     node['string'] = node['string'] + '[[' + dicts[num['_id']]['key'][0] + ']]'
                 else :#块引用
