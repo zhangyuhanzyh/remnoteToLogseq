@@ -71,7 +71,10 @@ def splice_content(content_list):
         if isinstance(content,str):
             result += content
         elif isinstance(content,dict):
-            if 'content' in content :# 引用日期
+            if 'textOfDeletedRem' in content:
+                for ct in content['textOfDeletedRem']:
+                    result += ct
+            elif 'content' in content :# 引用日期
                 result += ' ((' + dicts[content['_id']]['uid'] + '))'
             elif 'x' in content:  # latex
                 result += ' $' + content['text'].strip() + '$'
@@ -87,8 +90,8 @@ def splice_content(content_list):
                 if not content['_id'] in flag:
                     continue
                 if (flag[content['_id']] == 'folder') or flag[content['_id']] == 'page':
-                    #该引用是page或folder
-                    result += ' [[' + dicts[content['_id']]['key'][0].strip() +']]'
+                    #该引用是page或folder ---- remnote中page名可能有特殊格式
+                    result += ' [[' + splice_content(dicts[content['_id']]['key']).strip() +']]'
                 else :#块引用
                     print('块引用')
                     result += ' ((' + dicts[content['_id']]['uid'].strip() + '))'
@@ -282,7 +285,7 @@ def create_folder(folder_id):#创建文件夹(dict)   在logseq中 folder是特�
 def create_page(page_id):
     global dicts
     page = {}
-    page['title'] = dicts[page_id]['key'][0].strip() #title
+    page['title'] = splice_content(dicts[page_id]['key']).strip() #title
     page['children'] = [] #子block
     #当前page有 子块
     childs_id = dicts[page_id]['children']
@@ -434,10 +437,10 @@ for page in Page:#没有folder的page
 #             lsq_list.append(create_page(page))
             #lsq_dict['children'].append(create_node(page))
 
-print(lsq_list)
-print(folders)
+#print(lsq_list)
+#print(folders)
 
-print(flag['5wY7T7m9FGeDMXiGz'])
+
 #logseq_roam.json可以识别的json都是[]中
 
 
