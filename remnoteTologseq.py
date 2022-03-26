@@ -19,14 +19,14 @@ import os
 以字典的形式存储
 获取主要的笔记信息，在docs中
 '''
-with open('all.json','r',encoding='utf-8') as file:
+with open('rem.json','r',encoding='utf-8') as file:
     remjson_dict = json.load(file)
 #print(remjson_dict)
 
 docs = remjson_dict['docs']  #list 876 元素是dict
 #print(docs[0]['_id'])
 img_id = 1#图片编号
-def download_img(img_url, api_token):
+def download_img(img_url):
     print('===============================================================')
     global img_id
 
@@ -69,6 +69,8 @@ def splice_content(content_list):
         if isinstance(content,str):
             result += content
         elif isinstance(content,dict):
+            if 'content' in content :# 引用日期
+                result += ' ((' + content['_id'] + '))'
             if 'x' in content:  # latex
                 result += ' $' + content['text'].strip() + '$'
             elif 'b' in content:
@@ -77,7 +79,8 @@ def splice_content(content_list):
                 result += ' *' + content['text'].strip() + '*'
             elif 'u' in content:
                 result += ' <u>' + content['text'].strip() + '</u>>'
-
+            else:
+                result += content['text']
     return result
 
 '''
@@ -118,6 +121,7 @@ def create_uid():
     return uid
 
 Custom_css_id = '' #
+Todo_id = ''
 Custom_css = {} #存储kanban、table等id
 #获取rem中所有有用的信息
 for doc in docs:
@@ -134,7 +138,7 @@ for doc in docs:
         if (len(key) == 0 | len(children) ==0 ):#remnote中最后会有空节点
             continue
             # list Item, Edit Later,Automatically Sort,Document Sidebar,Disable Descendant Cards,Highlight,Header,Quick Add,to do,~,Source List,Document,Extra Card Detail,Card Item,Auto....tmp,Timestamp
-        if ('rcrt' in doc) and (doc['rcrt'] == 'i' or doc['rcrt'] == 'e' or doc['rcrt'] == 'a' or doc['rcrt'] == 's' or doc['rcrt'] == 'u' or doc['rcrt'] == 'h' or doc['rcrt'] == 'r' or doc['rcrt'] == 'q' or doc['rcrt'] == 't' or doc['rcrt'] == 'l' or doc['rcrt'] == 'os' or doc['rcrt'] == 'o' or doc['rcrt'] == 'x' or doc['rcrt'] == 'w' or doc['rcrt'] == 'm'):
+        if ('rcrt' in doc) and (doc['rcrt'] == 'i' or doc['rcrt'] == 'e' or doc['rcrt'] == 'a' or doc['rcrt'] == 's' or doc['rcrt'] == 'u' or doc['rcrt'] == 'h' or doc['rcrt'] == 'r' or doc['rcrt'] == 'q' or doc['rcrt'] == 'l' or doc['rcrt'] == 'os' or doc['rcrt'] == 'o' or doc['rcrt'] == 'x' or doc['rcrt'] == 'w' or doc['rcrt'] == 'm'):
             continue
         if ('rcrs' in doc):
             continue
@@ -177,6 +181,9 @@ for doc in docs:
         if ('rcrt' in doc) and (doc['rcrt'] == 'c'):#Custom CSS
             Custom_css_id = _id  #不用记录custom的信息，只用记录下id，在后面判断其他的样式即可
             continue
+        if ('rcrt' in doc) and doc['rcrt'] == 't':# To do
+            Todo_id = _id
+            print('todo_id:',Todo_id)
 
         if ('typeParents' in doc):
             if ('kanban' in Custom_css) and (  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0]== Custom_css['kanban']):
@@ -185,6 +192,12 @@ for doc in docs:
             if ('table' in Custom_css) and(  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0] == Custom_css['table']):
                 dicts[_id]['css'] = 'table'
                 print('table-----------------------------------')
+            if len(doc['typeParents'] )>= 1 and doc['typeParents'][0] == Todo_id:#这是一个todo类型的
+                dicts[_id]['todo'] = {}
+                dicts[_id]['todo']['statu'] = doc['crt']['t']['s']['s']
+                print('todo status:',dicts[_id]['todo']['statu'])
+
+
 for key in dicts.keys():
     judge(key)
 #打印字典键值及内容
@@ -317,6 +330,12 @@ def create_node(_id):
             return node
     if 'uid' in dicts[_id]:
         node['uid'] = dicts[_id]['uid']
+    if 'todo' in dicts[_id]:#to do项
+        if dicts[_id]['todo']['statu'] == 'Unfinished':
+            node['string'] += 'LATER '
+        elif dicts[_id]['todo']['statu'] == 'Finished':
+            node['string'] += 'DONE '
+
     content = dicts[_id]['key']#list
     #识别文本内容中的markdown内容 list元素只有两种情况 ：一个字符串  或  一个及以上 字典
     for num in content:
@@ -326,7 +345,9 @@ def create_node(_id):
             #print("特殊格式")
             print(num)
             #四种情况  b,l.u,i
-            if 'b' in num:#加粗
+            if 'content' in num :# 引用日期
+                node['string'] += ' ((' + dicts[num['_id']]['uid'] + '))'
+            elif 'b' in num:#加粗
                 node['string'] =node['string'] + '**' + num['text'] + '**' + ' '
             elif 'l' in num:#斜体
                 node['string'] = node['string'] + '*' + num['text'] + '*' + ' '
@@ -348,8 +369,8 @@ def create_node(_id):
                 node['string'] = node['string'] + ' ((' + dicts[num['qId']]['uid'] + '))'
             elif 'url' in num:#图片
                 img_url = num['url']
-                api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
-                filename = download_img(img_url, api_token)
+                #api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
+                filename = download_img(img_url)
                 node['string'] += ' ![1_img.png](' + filename +')'
     if 'rmcard' in dicts[_id]:  # 记忆卡片
         print('+++++++++++++++++++++++++++',dicts[_id])
@@ -357,7 +378,7 @@ def create_node(_id):
         if dicts[_id]['value']:
             node['string'] += ' {{cloze ' + splice_content( dicts[_id]['value'] ) + '}} #card'#前面也需加上一个空格
         else:
-            node['string'] += ' {{cloze ' + '' + '}} #card'
+            node['string'] += '  #card'
     if 'rmblock' in dicts[_id]: #记忆块
         node['string'] += ' #card'
 
