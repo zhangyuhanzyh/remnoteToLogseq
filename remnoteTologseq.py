@@ -61,6 +61,25 @@ def download_img(img_url, api_token):
     #     return "failed"
 
 
+
+#拼接 普通文本 + markdown文本 + latex公式
+def splice_content(content_list):
+    result = ''
+    for content in content_list:
+        if isinstance(content,str):
+            result += content
+        elif isinstance(content,dict):
+            if 'x' in content:  # latex
+                result += ' $' + content['text'].strip() + '$'
+            elif 'b' in content:
+                result += ' **' + content['text'].strip() + '**'
+            elif 'l' in content:
+                result += ' *' + content['text'].strip() + '*'
+            elif 'u' in content:
+                result += ' <u>' + content['text'].strip() + '</u>>'
+
+    return result
+
 '''
 从docs存储的各节点中获取需要的笔记内容及其他信息
 以_id为键值存在节点字典中
@@ -336,7 +355,7 @@ def create_node(_id):
         print('+++++++++++++++++++++++++++',dicts[_id])
         #记忆卡片为空做个判断
         if dicts[_id]['value']:
-            node['string'] += ' {{cloze ' + dicts[_id]['value'][0] + '}} #card'#前面也需加上一个空格
+            node['string'] += ' {{cloze ' + splice_content( dicts[_id]['value'] ) + '}} #card'#前面也需加上一个空格
         else:
             node['string'] += ' {{cloze ' + '' + '}} #card'
     if 'rmblock' in dicts[_id]: #记忆块

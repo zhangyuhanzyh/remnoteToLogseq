@@ -175,7 +175,7 @@ children:[]
            },
    ```
 
-   
+   经lyk笔记测试：value里面会有dict内容（latex或markdown）
 
 4. 记忆块
 
