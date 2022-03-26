@@ -63,6 +63,8 @@ def download_img(img_url):
 
 
 #拼接 普通文本 + markdown文本 + latex公式
+#拼接 普通文本 + markdown文本 + latex公式
+#获取 包含不同格式文本的内容
 def splice_content(content_list):
     result = ''
     for content in content_list:
@@ -70,19 +72,33 @@ def splice_content(content_list):
             result += content
         elif isinstance(content,dict):
             if 'content' in content :# 引用日期
-                result += ' ((' + content['_id'] + '))'
-            if 'x' in content:  # latex
+                result += ' ((' + dicts[content['_id']]['uid'] + '))'
+            elif 'x' in content:  # latex
                 result += ' $' + content['text'].strip() + '$'
-            elif 'b' in content:
+            elif 'b' in content:#加粗
                 result += ' **' + content['text'].strip() + '**'
-            elif 'l' in content:
+            elif 'l' in content:#斜体
                 result += ' *' + content['text'].strip() + '*'
-            elif 'u' in content:
+            elif 'u' in content:#下划线
                 result += ' <u>' + content['text'].strip() + '</u>>'
-            else:
-                result += content['text']
+            elif 'h' in content:#高亮 --- 换用粗斜体
+                result += ' ***' + content['text'].strip() + '***'
+            elif content['i'] == 'q':#引用
+                if not content['_id'] in flag:
+                    continue
+                if (flag[content['_id']] == 'folder') or flag[content['_id']] == 'page':
+                    #该引用是page或folder
+                    result += ' [[' + dicts[content['_id']]['key'][0].strip() +']]'
+                else :#块引用
+                    print('块引用')
+                    result += ' ((' + dicts[content['_id']]['uid'].strip() + '))'
+            elif 'qId' in content:#超链接
+                result += ' ((' + dicts[content['qId']]['uid'].strip() + '))'
+            elif 'url' in content:#图片
+                img_url = content['url']
+                filename = download_img(img_url)
+                result += ' ![1_img.png](' + filename +')'
     return result
-
 '''
 从docs存储的各节点中获取需要的笔记内容及其他信息
 以_id为键值存在节点字典中
@@ -192,7 +208,7 @@ for doc in docs:
             if ('table' in Custom_css) and(  len(doc['typeParents'] )>= 1) and (doc['typeParents'][0] == Custom_css['table']):
                 dicts[_id]['css'] = 'table'
                 print('table-----------------------------------')
-            if len(doc['typeParents'] )>= 1 and doc['typeParents'][0] == Todo_id:#这是一个todo类型的
+            if doc['typeParents'] != None and len(doc['typeParents'] )>= 1 and doc['typeParents'][0] == Todo_id:#这是一个todo类型的
                 dicts[_id]['todo'] = {}
                 dicts[_id]['todo']['statu'] = doc['crt']['t']['s']['s']
                 print('todo status:',dicts[_id]['todo']['statu'])
@@ -338,40 +354,41 @@ def create_node(_id):
 
     content = dicts[_id]['key']#list
     #识别文本内容中的markdown内容 list元素只有两种情况 ：一个字符串  或  一个及以上 字典
-    for num in content:
-        if isinstance(num,str):
-            node['string'] += num   ### 注意可能会被修改
-        elif isinstance(num,dict):
-            #print("特殊格式")
-            print(num)
-            #四种情况  b,l.u,i
-            if 'content' in num :# 引用日期
-                node['string'] += ' ((' + dicts[num['_id']]['uid'] + '))'
-            elif 'b' in num:#加粗
-                node['string'] =node['string'] + '**' + num['text'] + '**' + ' '
-            elif 'l' in num:#斜体
-                node['string'] = node['string'] + '*' + num['text'] + '*' + ' '
-            elif 'u' in num:#下划线
-                node['string'] = node['string'] + '<u>' + num['text'] + '</u>' + ' '
-            elif 'h' in num:#高亮
-                node['string'] = node['string'] + '***' + num['text'] + '***' + ' '
-            elif 'type' in num :#latex
-                node['string']  = node['string'] + '$' + num['text'].strip() + '$' + ' '
-            elif num['i'] == "q":#引用
-                if not num['_id'] in flag:
-                    continue
-                if (flag[num['_id']] == 'folder') | (flag[num['_id']] == 'page'): #该引用是floder或page
-                    node['string'] = node['string'] + '[[' + dicts[num['_id']]['key'][0] + ']]'
-                else :#块引用
-                    print('块引用')
-                    node['string'] = node['string'] + ' ((' + dicts[num['_id']]['uid'] + '))'
-            elif 'qId' in num:#超链接
-                node['string'] = node['string'] + ' ((' + dicts[num['qId']]['uid'] + '))'
-            elif 'url' in num:#图片
-                img_url = num['url']
-                #api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
-                filename = download_img(img_url)
-                node['string'] += ' ![1_img.png](' + filename +')'
+    node['string'] += splice_content(content)
+    # for num in content:
+    #     if isinstance(num,str):
+    #         node['string'] += num   ### 注意可能会被修改
+    #     elif isinstance(num,dict):
+    #         #print("特殊格式")
+    #         print(num)
+    #         #四种情况  b,l.u,i
+    #         if 'content' in num :# 引用日期
+    #             node['string'] += ' ((' + dicts[num['_id']]['uid'] + '))'
+    #         elif 'b' in num:#加粗
+    #             node['string'] =node['string'] + '**' + num['text'] + '**' + ' '
+    #         elif 'l' in num:#斜体
+    #             node['string'] = node['string'] + '*' + num['text'] + '*' + ' '
+    #         elif 'u' in num:#下划线
+    #             node['string'] = node['string'] + '<u>' + num['text'] + '</u>' + ' '
+    #         elif 'h' in num:#高亮
+    #             node['string'] = node['string'] + '***' + num['text'] + '***' + ' '
+    #         elif 'x' in num :#latex
+    #             node['string']  = node['string'] + '$' + num['text'].strip() + '$' + ' '
+    #         elif num['i'] == "q":#引用
+    #             if not num['_id'] in flag:
+    #                 continue
+    #             if (flag[num['_id']] == 'folder') | (flag[num['_id']] == 'page'): #该引用是floder或page
+    #                 node['string'] = node['string'] + '[[' + dicts[num['_id']]['key'][0] + ']]'
+    #             else :#块引用
+    #                 print('块引用')
+    #                 node['string'] = node['string'] + ' ((' + dicts[num['_id']]['uid'] + '))'
+    #         elif 'qId' in num:#超链接
+    #             node['string'] = node['string'] + ' ((' + dicts[num['qId']]['uid'] + '))'
+    #         elif 'url' in num:#图片
+    #             img_url = num['url']
+    #             #api_token = "fklasjfljasdlkfjlasjflasjfljhasdljflsdjflkjsadljfljsda"
+    #             filename = download_img(img_url)
+    #             node['string'] += ' ![1_img.png](' + filename +')'
     if 'rmcard' in dicts[_id]:  # 记忆卡片
         print('+++++++++++++++++++++++++++',dicts[_id])
         #记忆卡片为空做个判断

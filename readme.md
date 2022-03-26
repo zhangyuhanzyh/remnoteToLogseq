@@ -22,9 +22,9 @@
     *  ~~在logseq中插入图片的时候可能会引用失效，猜测是和图片名有关系，目前没有解决~~
     * 遇到失效的情况建议手动将图片拖动到该处
 * remnote特有格式及处理方法：
-  * 高亮：会将高亮内容的两端加上 粗斜体
+  * 高亮：会将高亮内容的两端加上 ***粗斜体***
   * 文件夹： remnote中的文件夹在logseq中体现为：含有对应**笔记链接**的**page**
-  * kanban：在kanban块前面加上 kanban
+  * kanban：因为logseq暂不支持kanban，会在kanban块前面加上 kanban 作为标识
 
 ## 三、文件说明
 
@@ -34,8 +34,6 @@
 
 ## 四、注意事项
 
-1. ~~remnote必须以文件夹(folder）为单位导出（含有双向链接的page放在同一folder下同时导出）~~
 1. 支持remnote整体导出
-1. 打开的文件为你导出的rem.json文件
+1. 打开的文件为你导出的rem.json文件(默认就是)
 1. 程序中的download_img方法中的路径需要是你的logseq中存储图片的路径（logseq/assets/)
-1. logseq中的page名中不支持含有空格，故在remnote中需要注意所有的page名不含空格
